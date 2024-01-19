@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Name Generator</title>
+    <style>
+        #errorMessage {
+            display: none;
+            background-color: #f44336;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0f2d49;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .title {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .title h1 {
+            color: #f2f7f7;
+            margin: 0;
+        }
+
+        .page-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .set {
+            width: calc(33.33% - 20px);
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .set:nth-child(odd) {
+            background-color: #e7fafe;
+        }
+
+        .set:nth-child(even) {
+            background-color: #f4f4f4;
+        }
+
+        .set h2 {
+            color: #16537e;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #16537e;
+        }
+
+        select,
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 14px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            flex-grow: 1;
+            position: relative;
+            color: #000000;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        button.copy-button {
+            padding: 8px 12px;
+            font-size: 14px;
+            background-color: #337ab7;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .logo-container.left-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .logo-container.left-logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .logo-container.right-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .logo-container.right-logo img {
+            width: 150px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">
+        <h1>Ferrero Campaign Taxonomy</h1>
+    </div>
+    <div class="page-container">
+        <div class="set">
+            <h2>Insertion Order</h2>
+            <div id="dropdownsContainer1" class="form-group"></div>
+            <div class="button-container">
+                <button onclick="generateNamingConvention(1)">Generate</button>
+                <div class="result" id="result1"></div>
+                <button class="copy-button" onclick="copyText('result1')">Copy</button>
+            </div>
+        </div>
+
+        <div class="set">
+            <h2>Line Item</h2>
+            <div id="dropdownsContainer2" class="form-group"></div>
+            <div class="button-container">
+                <button onclick="generateNamingConvention(2)">Generate</button>
+                <div class="result" id="result2"></div>
+                <button class="copy-button" onclick="copyText('result2')">Copy</button>
+            </div>
+        </div>
+
+        <div class="set">
+            <h2>Ad Type</h2>
+            <div id="dropdownsContainer3" class="form-group"></div>
+            <div class="button-container">
+                <button onclick="generateNamingConvention(3)">Generate</button>
+                <div class="result" id="result3"></div>
+                <button class="copy-button" onclick="copyText('result3')">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="logo-container left-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/10/Dentsu_logo.svg" alt="Logo">
+    </div>
+
+    <!-- Right corner logo -->
+    <div class="logo-container right-logo">
+        <img src="https://div6procdn.shopdutyfree.com/media/wysiwyg/brands/ferrero.png" alt="Right Logo">
+    </div>
+
+    <div id="errorMessage"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Fetch column data for Set 1 from "Data List" tab
+            fetchColumnData("19zUv7QglIRxQAhDS72_7xMqtFUYQV2O_Orszw3TqhZU", "dropdownsContainer1", "result1", "Insertion Order");
+
+            // Fetch column data for Set 2 from "Copy Data List" tab
+            fetchColumnData("19zUv7QglIRxQAhDS72_7xMqtFUYQV2O_Orszw3TqhZU", "dropdownsContainer2", "result2", "Line Item");
+
+            // Fetch column data for Set 3 from "Copy Data List" tab
+            fetchColumnData("1Pmtwk6WfEHq-BTi0rP7BHvan1awHSi8iv0otZeEd6hM", "dropdownsContainer3", "result3", "Ad Type");
+        });
+
+        function fetchColumnData(sheetId, dropdownsContainerId, resultId, tabName) {
+            var spreadsheetId = "19zUv7QglIRxQAhDS72_7xMqtFUYQV2O_Orszw3TqhZU";
+            var apiKey = "AIzaSyDAUct9hsLPtyFt89xzpNlXC4Lgrh1eusI";
+            var range = tabName + "!A1:Z";
+            var url = "https://sheets.googleapis.com/v4/spreadsheets/" + spreadsheetId + "/values/" + range + "?key=" + apiKey;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => populateInputs(data.values, dropdownsContainerId, resultId))
+                .catch(error => console.error("Error fetching column data:", error));
+        }
+
+        function populateInputs(columnData, dropdownsContainerId, resultId) {
+    var dropdownsContainer = document.getElementById(dropdownsContainerId);
+    dropdownsContainer.innerHTML = '';
+
+    columnData[0].forEach((columnName, columnIndex) => {
+        var formGroup = document.createElement("div");
+        formGroup.className = "form-group";
+
+        var label = document.createElement("label");
+        label.textContent = columnName + ":";
+        formGroup.appendChild(label);
+
+        var columnValues = columnData.slice(1).map(row => row[columnIndex]);
+        var distinctValues = [...new Set(columnValues.filter(Boolean))];
+
+        if (distinctValues.length > 0) {
+            var select = document.createElement("select");
+            select.id = "column" + (columnIndex + 1) + dropdownsContainerId;
+
+            distinctValues.forEach(value => {
+                var option = document.createElement("option");
+                option.value = value;
+                option.text = value;
+                select.appendChild(option);
+            });
+
+            formGroup.appendChild(select);
+        } else {
+            if (columnName.toLowerCase().includes("campaign name")) {
+                // Create a text input for "Campaign Name" column
+                var campaignNameInput = document.createElement("input");
+                campaignNameInput.type = "text";
+                campaignNameInput.id = "column" + (columnIndex + 1) + dropdownsContainerId;
+                campaignNameInput.maxLength = 30; // Set the maximum length to 30 characters
+                formGroup.appendChild(campaignNameInput);
+
+} else 
+
+
+if (columnName.toLowerCase().includes("ad variant (max 20 characters)")) {
+    // Create a text input for "Ad Variant (Max 20 characters)" column
+    var adVariantInput = document.createElement("input");
+    adVariantInput.type = "text";
+    adVariantInput.id = "column" + (columnIndex + 1) + dropdownsContainerId;
+    adVariantInput.maxLength = 20; // Set the maximum length to 20 characters
+    formGroup.appendChild(adVariantInput);
+            } else if (columnName.toLowerCase().includes("start week") || columnName.toLowerCase().includes("finish week")) {
+                var dateInput = document.createElement("input");
+                dateInput.type = "week";
+                dateInput.id = "column" + (columnIndex + 1) + dropdownsContainerId;
+                formGroup.appendChild(dateInput);
+            } else if (columnName.toLowerCase().includes("placement start date")) {
+                var dateInput = document.createElement("input");
+                dateInput.type = "date";
+                dateInput.id = "column" + (columnIndex + 1) + dropdownsContainerId;
+                formGroup.appendChild(dateInput);
+            }
+        }
+
+        dropdownsContainer.appendChild(formGroup);
+    });
+}
+
+function generateNamingConvention(setNumber) {
+    var namingConvention = "";
+    var isEmpty = false;
+
+    // Get all input and select elements within the specified container
+    var elements = document.querySelectorAll("#dropdownsContainer" + setNumber + " select, #dropdownsContainer" + setNumber + " input");
+
+    elements.forEach(function (element) {
+        if (!element.value && (!element.querySelector("input") || !element.querySelector("input").value)) {
+            isEmpty = true;
+            highlightField(element);
+        }
+
+        if (element.type === "week") {
+            // Convert the week input value to week number
+            var selectedWeek = element.value.split("-W");
+            namingConvention += "W" + parseInt(selectedWeek[1]) + "_";
+        } else {
+            var value = element.value || element.querySelector("input").value || "";
+            
+            // Extract the last few characters till the underscore
+            var underscoreIndex = value.lastIndexOf("_");
+            if (underscoreIndex !== -1) {
+                value = value.substr(underscoreIndex + 1);
+            }
+
+            namingConvention += value + "_";
+        }
+    });
+
+    if (isEmpty) {
+        showErrorMessage("Please fill in all fields before generating the naming convention.");
+        return;
+    }
+
+    namingConvention = namingConvention.slice(0, -1);
+
+    document.getElementById("result" + setNumber).innerText = namingConvention;
+}
+
+
+
+        function showErrorMessage(message) {
+            var errorMessageContainer = document.getElementById("errorMessage");
+            errorMessageContainer.innerText = message;
+            errorMessageContainer.style.display = "block";
+
+            // Hide the error message after 3 seconds (adjust the delay if needed)
+            setTimeout(function () {
+                errorMessageContainer.style.display = "none";
+            }, 3000);
+        }
+
+        function highlightField(element) {
+            element.style.border = "2px solid red";
+
+            // Remove the border after 3 seconds (adjust the delay if needed)
+            setTimeout(function () {
+                element.style.border = "";
+            }, 3000);
+        }
+
+        function copyText(resultId) {
+            var resultElement = document.getElementById(resultId);
+            var textarea = document.createElement("textarea");
+            textarea.value = resultElement.innerText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+        }
+    </script>
+</body>
+</html>
