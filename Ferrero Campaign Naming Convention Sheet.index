@@ -171,7 +171,7 @@
         </div>
 
         <div class="set">
-            <h2>Ad Type</h2>
+            <h2>Ad Name</h2>
             <div id="dropdownsContainer3" class="form-group"></div>
             <div class="button-container">
                 <button onclick="generateNamingConvention(3)">Generate</button>
@@ -200,7 +200,7 @@
             fetchColumnData("19zUv7QglIRxQAhDS72_7xMqtFUYQV2O_Orszw3TqhZU", "dropdownsContainer2", "result2", "Line Item");
 
             // Fetch column data for Set 3 from "Copy Data List" tab
-            fetchColumnData("1Pmtwk6WfEHq-BTi0rP7BHvan1awHSi8iv0otZeEd6hM", "dropdownsContainer3", "result3", "Ad Type");
+            fetchColumnData("1Pmtwk6WfEHq-BTi0rP7BHvan1awHSi8iv0otZeEd6hM", "dropdownsContainer3", "result3", "Ad Name");
         });
 
         function fetchColumnData(sheetId, dropdownsContainerId, resultId, tabName) {
